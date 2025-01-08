@@ -39,7 +39,7 @@
                                             <td>{{ $pengguna->email }}</td>
                                             <td>{{ $pengguna->peran }}</td>
                                             <td>
-                                                <button wire:click="pilihMenu('edit')"
+                                                <button wire:click="pilihEdit({{ $pengguna->id }})"
                                                     class="btn {{ $pilihanMenu == 'edit' ? 'btn-primary' : 'btn-outline-primary' }}">
                                                     Edit Pengguna
                                                 </button>
@@ -99,7 +99,38 @@
                             Edit Pengguna
                         </div>
                         <div class="card-body">
-                            test
+                            <form wire:submit='simpanEdit'>
+                                <label>Nama</label>
+                                <input type="text" class="form-control" wire:model='nama' />
+                                @error('nama')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                                <br>
+                                <label>Email</label>
+                                <input type="email" class="form-control" wire:model='email' />
+                                @error('email')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                                <br>
+                                <label>Password</label>
+                                <input type="password" class="form-control" wire:model='password' />
+                                @error('password')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                                <br>
+                                <label>Level</label>
+                                <select class="form-control" wire:model="peran">
+                                    <option value="" default selected>-- Pilih Level --</option>
+                                    <option value="Kasir">Kasir</option>
+                                    <option value="Admin Aplikasi">Admin</option>
+                                </select>
+                                @error('peran')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                                <br>
+                                <button type="submit" class="btn btn-primary mt-4">Simpan</button>
+                                <button type="button" wire:click='batal' class="btn btn-secondary mt-4">Batal</button>
+                            </form>
                         </div>
                     </div>
                 @elseif ($pilihanMenu == 'hapus')

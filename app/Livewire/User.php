@@ -14,11 +14,54 @@ class User extends Component
     public $peran;
     public $penggunaTerpilih;
 
+    public function pilihEdit($id)
+    {
+        $this->penggunaTerpilih = ModelUser::find($id);
+        $this->nama = $this->penggunaTerpilih->name;
+        $this->email = $this->penggunaTerpilih->email;
+        $this->peran = $this->penggunaTerpilih->peran;
+        $this->pilihanMenu = 'edit';
+    }
+
+    public function simpanEdit()
+    {
+        $this->validate([
+            'nama' => 'required|string|max:255',
+            'email' => ['required', 'email', 'unique:users,email,' . $this->penggunaTerpilih->id],
+            'peran' => 'required|in:Kasir,Admin Aplikasi',
+        ], [
+            'nama.required' => 'Nama wajib diisi.',
+            'nama.string' => 'Nama harus berupa teks.',
+            'nama.max' => 'Nama tidak boleh lebih dari 255 karakter.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Email yang dimasukkan tidak valid.',
+            'email.unique' => 'Email ini sudah digunakan.',
+            'peran.required' => 'Peran wajib dipilih.',
+            'peran.in' => 'Peran harus berupa "Kasir" atau "Admin Aplikasi".',
+        ]);
+
+        $simpan = $this->penggunaTerpilih;
+        $simpan->name = $this->nama;
+        $simpan->email = $this->email;
+        if ($this->password){
+            $simpan->password = bcrypt($this->password);
+        }
+        $simpan->peran = $this->peran;
+        $simpan->save();
+
+        $this->reset(['nama', 'email', 'password', 'peran', 'penggunaTerpilih']);
+
+        session()->flash('message', 'Data pengguna berhasil disimpan.');
+
+        $this->pilihanMenu = 'lihat';
+    }
+
     public function pilihHapus($id)
     {
         $this->penggunaTerpilih = ModelUser::find($id);
         $this->pilihanMenu = 'hapus';
     }
+
 
     public function hapus()
     {
@@ -30,8 +73,6 @@ class User extends Component
     {
         $this->reset();
     }
-
-
 
     public function simpan()
     {
