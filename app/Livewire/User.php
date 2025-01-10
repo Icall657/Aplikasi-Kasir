@@ -14,6 +14,14 @@ class User extends Component
     public $peran;
     public $penggunaTerpilih;
 
+    public function mount()
+    {
+        if (auth()->user()->peran != 'Admin Aplikasi') {
+            abort(403);
+        }
+    }
+
+
     public function pilihEdit($id)
     {
         $this->penggunaTerpilih = ModelUser::find($id);
@@ -43,7 +51,7 @@ class User extends Component
         $simpan = $this->penggunaTerpilih;
         $simpan->name = $this->nama;
         $simpan->email = $this->email;
-        if ($this->password){
+        if ($this->password) {
             $simpan->password = bcrypt($this->password);
         }
         $simpan->peran = $this->peran;

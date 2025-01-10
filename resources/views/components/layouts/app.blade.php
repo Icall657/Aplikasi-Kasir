@@ -22,8 +22,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand">KasirKu
-                </a>
+                <a class="navbar-brand">KasirKu</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +47,7 @@
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->peran }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <li>
@@ -76,14 +75,18 @@
                             class="btn {{ request()->routeIs('home') ? 'btn-primary' : 'btn-outline-primary' }}">
                             Beranda
                         </a>
+                        @if (Auth::user()->peran =='Admin Aplikasi')
                         <a href="{{ route('user') }}" wire:navigate
                             class="btn {{ request()->routeIs('user') ? 'btn-primary' : 'btn-outline-primary' }}">
                             Pengguna
                         </a>
+                        @endif
+                        @if (Auth::user()->peran =='Admin Aplikasi')
                         <a href="{{ route('produk') }}" wire:navigate
                             class="btn {{ request()->routeIs('produk') ? 'btn-primary' : 'btn-outline-primary' }}">
                             Produk
                         </a>
+                        @endif
                         <a href="{{ route('transaksi') }}" wire:navigate
                             class="btn {{ request()->routeIs('transaksi') ? 'btn-primary' : 'btn-outline-primary' }}">
                             Transaksi

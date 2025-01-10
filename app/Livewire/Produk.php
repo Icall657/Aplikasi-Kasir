@@ -19,6 +19,13 @@ class Produk extends Component
     public $produkTerpilih;
     public $fileExcel;
 
+    public function mount()
+    {
+        if (auth()->user()->peran != 'Admin Aplikasi') {
+            abort(403);
+        }
+    }
+    
     public function pilihEdit($id)
     {
         $this->produkTerpilih = ModelProduk::find($id);
