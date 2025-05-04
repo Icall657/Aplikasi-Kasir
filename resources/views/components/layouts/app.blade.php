@@ -1,109 +1,122 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="id">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KasirKu</title>
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Import Iconly CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconly@2.0.0/dist/iconly.min.css">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional: Tambahkan konfigurasi warna jika mau -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb', // biru untuk aksen
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand">KasirKu</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body class="bg-gray-50 text-gray-800">
+    <nav class="bg-white shadow-md border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="text-2xl font-semibold text-primary">KasirKu</div>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto"></ul>
-                    <ul class="navbar-nav ms-auto">
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{ Auth::user()->peran }}
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
-                                        </a>
-                                    </li>
-                                </ul>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </li>
-                        @endguest
-                    </ul>
+                <!-- Mobile menu button -->
+                <div class="sm:hidden">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
+                        class="text-gray-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
                 </div>
-            </div>
-        </nav>
 
-        <main class="py-4">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <a href="{{ route('home') }}" wire:navigate
-                            class="btn {{ request()->routeIs('home') ? 'btn-primary' : 'btn-outline-primary' }}">
-                            Beranda
-                        </a>
-                        @if (Auth::user()->peran =='Admin Aplikasi')
-                        <a href="{{ route('user') }}" wire:navigate
-                            class="btn {{ request()->routeIs('user') ? 'btn-primary' : 'btn-outline-primary' }}">
+                <!-- Desktop Menu -->
+                <div class="hidden sm:flex space-x-6 items-center">
+                    <a href="{{ route('home') }}"
+                        class="hover:text-primary {{ request()->routeIs('home') ? 'text-primary font-semibold' : 'text-gray-600' }}">
+                        Beranda
+                    </a>
+                    @if (Auth::user()->peran == 'Admin Aplikasi')
+                        <a href="{{ route('user') }}"
+                            class="hover:text-primary {{ request()->routeIs('user') ? 'text-primary font-semibold' : 'text-gray-600' }}">
                             Pengguna
                         </a>
-                        @endif
-                        @if (Auth::user()->peran =='Admin Aplikasi')
-                        <a href="{{ route('produk') }}" wire:navigate
-                            class="btn {{ request()->routeIs('produk') ? 'btn-primary' : 'btn-outline-primary' }}">
+                        <a href="{{ route('produk') }}"
+                            class="hover:text-primary {{ request()->routeIs('produk') ? 'text-primary font-semibold' : 'text-gray-600' }}">
                             Produk
                         </a>
-                        @endif
-                        <a href="{{ route('transaksi') }}" wire:navigate
-                            class="btn {{ request()->routeIs('transaksi') ? 'btn-primary' : 'btn-outline-primary' }}">
-                            Transaksi
-                        </a>
-                        <a href="{{ route('laporan') }}" wire:navigate
-                            class="btn {{ request()->routeIs('laporan') ? 'btn-primary' : 'btn-outline-primary' }}">
-                            Laporan
-                        </a>
-                    </div>
+                    @endif
+                    <a href="{{ route('transaksi') }}"
+                        class="hover:text-primary {{ request()->routeIs('transaksi') ? 'text-primary font-semibold' : 'text-gray-600' }}">
+                        Transaksi
+                    </a>
+                    <a href="{{ route('laporan') }}"
+                        class="hover:text-primary {{ request()->routeIs('laporan') ? 'text-primary font-semibold' : 'text-gray-600' }}">
+                        Laporan
+                    </a>
+
+                    @guest
+                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-primary">Login</a>
+                        <a href="{{ route('register') }}" class="text-gray-600 hover:text-primary">Register</a>
+                    @else
+                        <div class="relative group">
+                            <button class="text-gray-600 hover:text-primary font-medium">
+                                {{ Auth::user()->peran }}
+                            </button>
+                            <div
+                                class="absolute right-0 mt-2 w-32 bg-white shadow-md rounded-md hidden group-hover:block z-10">
+                                <a href="{{ route('logout') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                                    @csrf
+                                </form>
+                            </div>
+                        </div>
+                    @endguest
                 </div>
             </div>
-            {{ $slot }}
-        </main>
-    </div>
+        </div>
 
-    <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 space-y-2">
+            @if (Auth::user()->peran == 'Admin Aplikasi')
+                <a href="{{ route('home') }}" class="block text-gray-700 hover:text-primary">Beranda</a>
+                <a href="{{ route('user') }}" class="block text-gray-700 hover:text-primary">Pengguna</a>
+                <a href="{{ route('produk') }}" class="block text-gray-700 hover:text-primary">Produk</a>
+            @endif
+            <a href="{{ route('transaksi') }}" class="block text-gray-700 hover:text-primary">Transaksi</a>
+            <a href="{{ route('laporan') }}" class="block text-gray-700 hover:text-primary">Laporan</a>
+            @guest
+                <a href="{{ route('login') }}" class="block text-gray-700 hover:text-primary">Login</a>
+                <a href="{{ route('register') }}" class="block text-gray-700 hover:text-primary">Register</a>
+            @else
+                <a href="{{ route('logout') }}" class="block text-gray-700 hover:text-primary"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Logout
+                </a>
+            @endguest
+        </div>
+    </nav>
+
+    <main class="py-6 px-4">
+        {{ $slot }}
+    </main>
 </body>
 
 </html>

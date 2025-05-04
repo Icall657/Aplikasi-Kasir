@@ -12,6 +12,7 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', Beranda::class)->name('home');
